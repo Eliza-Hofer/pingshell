@@ -10,6 +10,7 @@ while ($true) {
     if ($pingResult1) {
         Write-Host "Pinged from $targetHost1"
         # Add your specific action for targetHost1 here
+        
     }
     elseif ($pingResult2) {
         Write-Host "Pinged from $targetHost2"
