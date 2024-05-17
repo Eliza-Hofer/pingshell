@@ -1,8 +1,15 @@
 import socket
-
+import io
 def main():
     addr1 = "ip address here"
     addr2 = "different ip here"
+    file_path = "config.txt"
+
+
+    # make nessicary files 
+    with io.open(file_path, 'w', encoding='utf-8') as file:
+        file.write("config placeholder")
+
     # Create a raw socket
     with socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP) as s:
         while True:
