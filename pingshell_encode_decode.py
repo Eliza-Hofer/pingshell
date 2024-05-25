@@ -1,6 +1,14 @@
 from pynput.keyboard import Controller
 import time
 
+def press_windows_r():
+    # Simulate pressing the Windows key and "R" key
+    keyboard = Controller()
+    keyboard.press(keyboard.key.windows)  # Press Windows key
+    keyboard.press('r')  # Press "R" key
+    keyboard.release('r')  # Release "R" key
+    keyboard.release(keyboard.key.windows)  # Release Windows key
+
 def read_binary_from_file(file_path):
     try:
         with open(file_path, "r") as file:
@@ -11,18 +19,16 @@ def read_binary_from_file(file_path):
 
 def binary_to_text(binary_str):
     try:
-        decimal_value = int(binary_str, 2)
-        text = chr(decimal_value)
+        # Split the binary string into 8-bit chunks
+        chunks = [binary_str[i:i+8] for i in range(0, len(binary_str), 8)]
+        # Convert each chunk to its decimal value and then to an ASCII character
+        text = "".join(chr(int(chunk, 2)) for chunk in chunks)
         return text
     except ValueError:
         return None
 
 def type_text(text):
     keyboard = Controller()
-    keyboard.press(Key.cmd)
-    keyboard.press('r')
-    keyboard.release(Key.cmd)
-    keyboard.release('r')
     keyboard.type(text)
 
 def main():
@@ -34,7 +40,9 @@ def main():
         if plaintext:
             print(f"Plaintext: {plaintext}")
             time.sleep(2)  # Optional delay before typing
-            type_text(plaintext)
+            press_windows_r()  # Simulate Windows + R keypress
+            time.sleep(1)  # Optional delay before typing
+            type_text(plaintext)  # Type the plaintext
         else:
             print("Invalid binary input")
     else:
