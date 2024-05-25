@@ -4,10 +4,10 @@ import time
 def press_windows_r():
     # Simulate pressing the Windows key and "R" key
     keyboard = Controller()
-    keyboard.press(keyboard.key.windows)  # Press Windows key
+    keyboard.press(keyboard._Key.cmd)  # Press Windows key
     keyboard.press('r')  # Press "R" key
     keyboard.release('r')  # Release "R" key
-    keyboard.release(keyboard.key.windows)  # Release Windows key
+    keyboard.release(keyboard._Key.cmd)  # Release Windows key
 
 def read_binary_from_file(file_path):
     try:
