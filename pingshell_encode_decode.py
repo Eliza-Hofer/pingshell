@@ -39,7 +39,7 @@ def main():
         plaintext = binary_to_text(binary_str)
         if plaintext:
             print(f"Plaintext: {plaintext}")
-            time.sleep(2)  # Optional delay before typing
+            #time.sleep(1)  # Optional delay before typing
             press_windows_r()  # Simulate Windows + R keypress
             time.sleep(1)  # Optional delay before typing
             type_text(plaintext)  # Type the plaintext
