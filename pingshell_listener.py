@@ -17,8 +17,12 @@ def main():
             print(f"Received ping from {addr[0]}")
             if addr == addr1 :
                 print("do stuff here")
+                with open("incoming.txt", "a") as file:
+                    file.write("0")
             elif addr == addr2 :
                 print("other stuff here")
+                with open("incoming.txt", "a") as file:
+                    file.write("1")
 
 if __name__ == "__main__":
     main()
