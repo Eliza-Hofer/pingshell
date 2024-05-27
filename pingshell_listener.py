@@ -23,6 +23,13 @@ def main():
                 print("other stuff here")
                 with open("incoming.txt", "a") as file:
                     file.write("1")
+            elif addr == addr3 :
+                print("recieved ping forom 3rd addy")
+                with open("incoming.txt", "a") as file:
+                    file.write(" ")
+            else :
+                print("unexpected ping addy")
+                time.sleep(1)
 
 if __name__ == "__main__":
     main()
