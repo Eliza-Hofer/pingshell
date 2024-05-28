@@ -3,9 +3,9 @@ import io
 import time
 
 def main():
-    addr1 = "192.168.1.222"
-    addr2 = "192.168.1.40"
-    addr3 = "192.168.1.22"
+    addr1 = "192.168.1.1"
+    addr2 = "192.168.1.2"
+    addr3 = "192.168.1.3"
     file_path = "config.txt"
 
     # Create necessary files

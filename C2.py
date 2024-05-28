@@ -19,11 +19,32 @@ def send_ping(ip_address):
     ssh_client = paramiko.SSHClient()
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh_client.connect(ip_address, username="your_username", password="your_password")
-    ssh_client.exec_command("ping -c 1 google.com")
+    ssh_client.exec_command("ping -c 1 TARGET HERE")
     ssh_client.close()
 
+def string_to_binary(input_string):
+    # Convert each character in the string to its binary representation
+    binary_string = ' '.join(format(ord(char), '08b') for char in input_string)
+    return binary_string
+
+def write_binary_to_file(binary_string, file_path):
+    # Write the binary string to a .txt file
+    with open(file_path, 'w') as file:
+        file.write(binary_string)
+
 def main():
-    file_path = "binary_input.txt"
+    user_input = input("Send command: ")
+    
+    # Convert the string to binary
+    binary_string = string_to_binary(user_input)
+    
+    # Specify the output file path
+    file_path = "binary_string.txt"
+    
+    # Write the binary string to the file
+    write_binary_to_file(binary_string, file_path)
+    
+    file_path = "binary_string.txt"
     binary_str = read_binary_from_file(file_path)
 
     if binary_str:
