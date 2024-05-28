@@ -6,3 +6,4 @@ the idea is to listen on the victim device for pings from specific addresses pre
 
 Developers notes
 -as of right now I have the encode decode and command execution mostly finished and the listener just needs some refining. I will need to add a way for it to add a space to the file when a third address pings probably. The next major step is the C2 code.
+Yayy as of now I have started the c2 and really just need to do some testing to make sure the connections work in a timely manner.and then comes the problem of how to get the listener running on the victim computer. I plan to have it start with the listener and the listener will make a job to do whatever is stored in the textfile at a later time. (timing attack) we want to use an active user's session so we can schedule jobs for opening the decode/execute script. I hope this is used for all of the malicous purpouses. I want to see this world burn even faster than it already is. 
