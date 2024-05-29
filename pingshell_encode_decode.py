@@ -3,7 +3,7 @@ import time
 
 def press_windows_r():
     # Simulate pressing the Windows key and "R" key
-    keyboard = Controller()
+    kdefeyboard = Controller()
     keyboard.press(keyboard._Key.cmd)  # Press Windows key
     keyboard.press('r')  # Press "R" key
     keyboard.release('r')  # Release "R" key
