@@ -1,6 +1,7 @@
 from pynput.keyboard import Controller
 import time
 
+
 def press_windows_r():
     # Simulate pressing the Windows key and "R" key
     keyboard = Controller()
