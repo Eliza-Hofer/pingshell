@@ -5,9 +5,11 @@ def press_windows_r():
     # Simulate pressing the Windows key and "R" key
     keyboard = Controller()
     keyboard.press(keyboard._Key.cmd)  # Press Windows key
-    keyboard.press('t')  # Press "R" keyt
-    keyboard.release('t')  # Release "R" key
-    keyboard.release(keyboard._Key.cmd)  
+    keyboard.release(keyboard._Key.cmd)
+    time.sleep(1)
+    keyboard.type('terminal')
+    keyboard.press(keyboard._Key.enter)
+    keyboard.release(keyboard._Key.enter)
 
 def read_binary_from_file(file_path):
     try:
@@ -38,7 +40,6 @@ def main():
     if binary_str:
         plaintext = binary_to_text(binary_str)
         if plaintext:
-            print(f"Plaintext: {plaintext}")
             #time.sleep(1)  # Optional delay before typing
             press_windows_r()  # Simulate Windows + R keypress
             time.sleep(1)  # Optional delay before typing
