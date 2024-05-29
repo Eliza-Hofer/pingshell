@@ -24,7 +24,7 @@ def create_cron_job(python_file_path, interval=None, run_once=False):
     system = platform.system()
     
     if system == 'Linux':
-        cron = CronTab(tabfile=None)  # Use the current user's crontab
+        cron = CronTab(user=True)  # Use the current user's crontab
         if run_once:
             # Get the current time and add one minute
             run_time = datetime.now() + timedelta(minutes=1)
@@ -48,7 +48,7 @@ def create_cron_job(python_file_path, interval=None, run_once=False):
             # Get the current time and add one minute
             run_time = datetime.now() + timedelta(minutes=1)
             start_time = run_time.strftime('%H:%M')
-            start_date = run_time.strftime('%Y-%m-%d')
+            start_date = run_time.strftime('%m/%d/%Y')  # Correct format for schtasks
             
             command = f'schtasks /create /tn {task_name} /tr "python {python_file_path}" /sc once /st {start_time} /sd {start_date} /f'
         else:
@@ -68,6 +68,11 @@ def create_cron_job(python_file_path, interval=None, run_once=False):
     else:
         raise OSError("Unsupported operating system")
 
+
+
+
+
+
 def main():
     addr1 = "192.168.1.1"
     addr2 = "192.168.1.2"
@@ -79,7 +84,7 @@ def main():
         file.write("config placeholder")
 
     # Schedule the script to run once, one minute from now
-    #create_cron_job("./pingshell_decode_linux.py", run_once=True)
+    create_cron_job("./pingshell_encode_decode.py", run_once=True)
 
     try:
         # Create a raw socket
