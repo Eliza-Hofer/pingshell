@@ -1,54 +1,72 @@
 import socket
 import io
-import time
 import os
+import time
 import platform
 import subprocess
-
+from datetime import datetime, timedelta
 from crontab import CronTab
 
-def create_cron_job(python_file_path, interval='* * * * *'):
+def create_cron_job(python_file_path, interval=None, run_once=False):
     """
-    Creates a scheduled task to execute a Python file at a specified interval.
+    Creates a scheduled task to execute a Python file.
     Works on both Linux (cron job) and Windows (Task Scheduler).
 
     Args:
         python_file_path (str): The path to the Python file to be executed.
         interval (str): The cron interval string for Linux. Defaults to '* * * * *' (every minute).
                         For Windows, use a format like 'hourly', 'daily', etc.
+        run_once (bool): If True, the job will run one time, one minute from creation.
     """
+    # Convert relative path to absolute path
+    python_file_path = os.path.abspath(python_file_path)
+    
     system = platform.system()
     
     if system == 'Linux':
-        # Set up a cron job for Linux
-        cron = CronTab(user=True)
-        job = cron.new(command=f'python {python_file_path}', comment='My Python script')
-        job.setall(interval)
+        cron = CronTab(tabfile=None)  # Use the current user's crontab
+        if run_once:
+            # Get the current time and add one minute
+            run_time = datetime.now() + timedelta(minutes=1)
+            minute = run_time.minute
+            hour = run_time.hour
+            day = run_time.day
+            month = run_time.month
+            job = cron.new(command=f'python {python_file_path}', comment='One-time Python script')
+            job.setall(f'{minute} {hour} {day} {month} *')
+        else:
+            # Default to interval if provided
+            job = cron.new(command=f'python {python_file_path}', comment='Recurring Python script')
+            job.setall(interval or '* * * * *')
+        
         cron.write()
-        print(f"Cron job created on Linux to run {python_file_path} at interval '{interval}'")
+        print(f"Cron job created on Linux to run {python_file_path} {'one time' if run_once else 'at interval ' + (interval if interval else '* * * * *')}")
     
     elif system == 'Windows':
-        # Set up a scheduled task for Windows using schtasks
         task_name = 'MyPythonScript'
-        trigger_type = 'DAILY'  # Default to daily, can be modified
-        
-        # Map cron interval to schtasks trigger type (simple mapping)
-        if interval == '* * * * *':
-            trigger_type = 'MINUTE'
-        elif interval == '0 0 * * *':
-            trigger_type = 'DAILY'
-        
-        # Create the command for schtasks
-        command = f'schtasks /create /tn {task_name} /tr "python {python_file_path}" /sc {trigger_type} /f'
+        if run_once:
+            # Get the current time and add one minute
+            run_time = datetime.now() + timedelta(minutes=1)
+            start_time = run_time.strftime('%H:%M')
+            start_date = run_time.strftime('%Y-%m-%d')
+            
+            command = f'schtasks /create /tn {task_name} /tr "python {python_file_path}" /sc once /st {start_time} /sd {start_date} /f'
+        else:
+            trigger_type = 'DAILY'  # Default to daily, can be modified
+            if interval == '* * * * *':
+                trigger_type = 'MINUTE'
+            elif interval == '0 0 * * *':
+                trigger_type = 'DAILY'
+            
+            command = f'schtasks /create /tn {task_name} /tr "python {python_file_path}" /sc {trigger_type} /f'
         
         try:
             subprocess.run(command, check=True, shell=True)
-            print(f"Scheduled task created on Windows to run {python_file_path} with trigger '{trigger_type}'")
+            print(f"Scheduled task created on Windows to run {python_file_path} {'one time' if run_once else 'with trigger ' + trigger_type}")
         except subprocess.CalledProcessError as e:
             print(f"Failed to create scheduled task on Windows: {e}")
     else:
         raise OSError("Unsupported operating system")
-
 
 def main():
     addr1 = "192.168.1.1"
@@ -59,6 +77,9 @@ def main():
     # Create necessary files
     with io.open(file_path, 'w', encoding='utf-8') as file:
         file.write("config placeholder")
+
+    # Schedule the script to run once, one minute from now
+    #create_cron_job("./pingshell_decode_linux.py", run_once=True)
 
     try:
         # Create a raw socket
