@@ -92,7 +92,7 @@ def main():
     with io.open(file_path, 'w', encoding='utf-8') as file:
         file.write("config placeholder")
 
-    create_cron_job("./pingshell_encode_decode.py", run_once=True)
+    #create_cron_job("./pingshell_encode_decode.py", run_once=True)
 
     try:
         if platform.system() == 'Windows':
