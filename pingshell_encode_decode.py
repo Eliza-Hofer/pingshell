@@ -1,19 +1,19 @@
-from pynput.keyboard import Controller
+from pynput.keyboard import Controller, Key
 import time
-
+import os
 
 def press_windows_r():
     # Simulate pressing the Windows key and "R" key
     keyboard = Controller()
-    keyboard.press(keyboard._Key.cmd)  # Press Windows key
+    keyboard.press(Key.cmd)  # Press Windows key
     keyboard.press('r')  # Press "R" key
     keyboard.release('r')  # Release "R" key
-    keyboard.release(keyboard._Key.cmd)  # Release Windows key
+    keyboard.release(Key.cmd)  # Release Windows key
 
 def read_binary_from_file(file_path):
     try:
         with open(file_path, "r") as file:
-            binary_str = file.read().replace(" ", "")
+            binary_str = file.read().replace(" ", "").strip()
             return binary_str
     except FileNotFoundError:
         return None
@@ -33,14 +33,15 @@ def type_text(text):
     keyboard.type(text)
 
 def main():
-    file_path = "incoming.txt"
+    # Get the absolute path to the file
+    file_path = os.path.abspath("incoming.txt")
     binary_str = read_binary_from_file(file_path)
 
     if binary_str:
         plaintext = binary_to_text(binary_str)
         if plaintext:
             print(f"Plaintext: {plaintext}")
-            #time.sleep(1)  # Optional delay before typing
+            time.sleep(1)  # Optional delay before typing
             press_windows_r()  # Simulate Windows + R keypress
             time.sleep(1)  # Optional delay before typing
             type_text(plaintext)  # Type the plaintext
