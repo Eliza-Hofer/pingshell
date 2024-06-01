@@ -14,10 +14,10 @@ def read_binary_from_file(file_path):
             binary_str = file.read().replace(" ", "")
             return binary_str
     except FileNotFoundError:
+        print(f"File not found: {file_path}")
         return None
 
 def send_ping(ip_address):
-    # Execute the ping command via SSH
     ssh_client = paramiko.SSHClient()
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     
@@ -25,35 +25,39 @@ def send_ping(ip_address):
         username = credentials[ip_address]["username"]
         password = credentials[ip_address]["password"]
         
-        ssh_client.connect(ip_address, username=username, password=password)
-        ssh_client.exec_command("ping -c 1 TARGET HERE")
-        ssh_client.close()
+        try:
+            ssh_client.connect(ip_address, username=username, password=password)
+            stdin, stdout, stderr = ssh_client.exec_command("ping -c 1 TARGET_HERE")
+            print(stdout.read().decode())
+            ssh_client.close()
+        except paramiko.AuthenticationException:
+            print(f"Authentication failed for {ip_address}")
+        except paramiko.SSHException as e:
+            print(f"SSH error for {ip_address}: {e}")
+        except Exception as e:
+            print(f"Error connecting to {ip_address}: {e}")
     else:
         print(f"No credentials found for IP address: {ip_address}")
 
 def string_to_binary(input_string):
-    # Convert each character in the string to its binary representation
-    binary_string = ' '.join(format(ord(char), '08b') for char in input_string)
-    return binary_string
+    return ' '.join(format(ord(char), '08b') for char in input_string)
 
 def write_binary_to_file(binary_string, file_path):
-    # Write the binary string to a .txt file
-    with open(file_path, 'w') as file:
-        file.write(binary_string)
+    try:
+        with open(file_path, 'w') as file:
+            file.write(binary_string)
+    except IOError as e:
+        print(f"Error writing to file {file_path}: {e}")
 
 def main():
     user_input = input("Send command: ")
     
-    # Convert the string to binary
     binary_string = string_to_binary(user_input)
     
-    # Specify the output file path
     file_path = "binary_string.txt"
     
-    # Write the binary string to the file
     write_binary_to_file(binary_string, file_path)
     
-    file_path = "binary_string.txt"
     binary_str = read_binary_from_file(file_path)
 
     if binary_str:
@@ -62,7 +66,7 @@ def main():
                 send_ping("192.168.1.168")
             elif char == "0":
                 send_ping("192.168.1.226")
-            # Handle spaces (optional)
+            # Handle spaces or other characters if necessary
 
 if __name__ == "__main__":
     main()
