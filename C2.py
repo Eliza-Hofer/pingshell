@@ -2,9 +2,9 @@ import subprocess
 import paramiko
 
 # Define your three IP addresses
-IP_ADDRESS_1 = "192.168.1.1"
-IP_ADDRESS_2 = "192.168.1.2"
-IP_ADDRESS_3 = "192.168.1.3"
+IP_ADDRESS_1 = "192.168.1.168"
+IP_ADDRESS_2 = "192.168.1.226"
+IP_ADDRESS_3 = "192.168.1.222"
 
 def read_binary_from_file(file_path):
     try:
