@@ -84,7 +84,7 @@ def create_cron_job(python_file_path, interval=None, run_once=False):
         raise OSError("Unsupported operating system")
 
 def main():
-    addr1 = "192.168.1.168"
+    addr1 = "192.168.1.196"
     addr2 = "192.168.1.226"
     addr3 = "192.168.1.222"
     file_path = "config.txt"

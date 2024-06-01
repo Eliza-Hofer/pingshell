@@ -1,10 +1,12 @@
 import subprocess
 import paramiko
 
-# Define your three IP addresses
-IP_ADDRESS_1 = "192.168.1.168"
-IP_ADDRESS_2 = "192.168.1.226"
-IP_ADDRESS_3 = "192.168.1.222"
+# Define your IP addresses and credentials
+credentials = {
+    "192.168.1.196": {"username": "smokey", "password": "Ee391001771"},
+    "192.168.1.226": {"username": "bandit", "password": "lilith"},
+    "192.168.1.222": {"username": "Eliza", "password": "Ee391001771"}
+}
 
 def read_binary_from_file(file_path):
     try:
@@ -18,9 +20,16 @@ def send_ping(ip_address):
     # Execute the ping command via SSH
     ssh_client = paramiko.SSHClient()
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh_client.connect(ip_address, username="your_username", password="your_password")
-    ssh_client.exec_command("ping -c 1 TARGET HERE")
-    ssh_client.close()
+    
+    if ip_address in credentials:
+        username = credentials[ip_address]["username"]
+        password = credentials[ip_address]["password"]
+        
+        ssh_client.connect(ip_address, username=username, password=password)
+        ssh_client.exec_command("ping -c 1 TARGET HERE")
+        ssh_client.close()
+    else:
+        print(f"No credentials found for IP address: {ip_address}")
 
 def string_to_binary(input_string):
     # Convert each character in the string to its binary representation
@@ -50,9 +59,9 @@ def main():
     if binary_str:
         for char in binary_str:
             if char == "1":
-                send_ping(IP_ADDRESS_1)
+                send_ping("192.168.1.168")
             elif char == "0":
-                send_ping(IP_ADDRESS_2)
+                send_ping("192.168.1.226")
             # Handle spaces (optional)
 
 if __name__ == "__main__":
