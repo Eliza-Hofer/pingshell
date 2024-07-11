@@ -17,7 +17,7 @@ def read_binary_from_file(file_path):
         print(f"File not found: {file_path}")
         return None
 
-def send_ping(ip_address, credentials):
+def send_ping(ip_address):
     try:
         if ip_address in credentials:
             username = credentials[ip_address]["username"]
