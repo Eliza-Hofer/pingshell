@@ -17,27 +17,34 @@ def read_binary_from_file(file_path):
         print(f"File not found: {file_path}")
         return None
 
-def send_ping(ip_address):
-    ssh_client = paramiko.SSHClient()
-    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    
-    if ip_address in credentials:
-        username = credentials[ip_address]["username"]
-        password = credentials[ip_address]["password"]
-        
-        try:
-            ssh_client.connect(ip_address, username=username, password=password)
-            stdin, stdout, stderr = ssh_client.exec_command("ping -c 1 TARGET_HERE")
-            print(stdout.read().decode())
-            ssh_client.close()
-        except paramiko.AuthenticationException:
-            print(f"Authentication failed for {ip_address}")
-        except paramiko.SSHException as e:
-            print(f"SSH error for {ip_address}: {e}")
-        except Exception as e:
-            print(f"Error connecting to {ip_address}: {e}")
-    else:
+def send_ping(ip_address, credentials):
+    try:
+        if ip_address in credentials:
+            username = credentials[ip_address]["username"]
+            password = credentials[ip_address]["password"]
+            ssh_client = paramiko.SSHClient()
+            ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                ssh_client.connect(ip_address, username=username, password=password)
+                with open('address_register.txt', 'r') as file:
+                    addresses = file.read().splitlines()
+                    for address in addresses:
+                        stdin, stdout, stderr = ssh_client.exec_command(f"ping -c 1 {address}")
+                        ping_output = stdout.read().decode()
+                        print(f"Ping result for {address}:\n{ping_output}")
+            except paramiko.AuthenticationException:
+                print(f"Authentication failed for {ip_address}")
+            except paramiko.SSHException as e:
+                print(f"SSH error for {ip_address}: {e}")
+            except Exception as e:
+                print(f"Error connecting to {ip_address}: {e}")
+            finally:
+                ssh_client.close()
+        else:
+            print(f"No credentials found for IP address: {ip_address}")
+    except KeyError:
         print(f"No credentials found for IP address: {ip_address}")
+
 
 def string_to_binary(input_string):
     return ' '.join(format(ord(char), '08b') for char in input_string)
