@@ -123,6 +123,8 @@ def main():
                                     press_windows_r()
                                     time.sleep(1)
                                     type_text(plaintext)
+                                    open('incoming.txt', 'w').close()
+
                                 else:
                                     print("Invalid binary input")
                             else:
