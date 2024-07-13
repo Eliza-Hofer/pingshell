@@ -1,6 +1,13 @@
 # pingshell
 
- 
+:::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::________::::PINGLING BOTNET::::::
+:::::::::::::::/        \::::::::::::::::::::::::
+:::::::::::::<| []    [] |>::::::::::::::::::::::
+::::::::::::::|    WW    |:::::::::::::::::::::::
+:::::::::::::::\________/::::::::::::::::::::::::
+:::::::::::::::::v::::v::::::::::::::::::::::::::
+
 work in progress. a shell/malware that only communicates via ping smuggling
 the idea is to listen on the victim device for pings from specific addresses predetermined and hard coded. This shell would be noisy and easy to track and impractical, but it would be interesting to see how many computers could be comprimised through falling victim to ping smuggling. There is also a way to obfuscate origin addresses as long as you have other addresses or a botnet pinging regularly for "noise"
 
