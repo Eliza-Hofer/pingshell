@@ -73,7 +73,8 @@ def main():
                 send_ping("420.69.96.021")
             elif char == "0":
                 send_ping("420.69.96.022")
-            # Handle spaces or other characters if necessary
+    
+    send_ping("420.69.96.023")
 
 if __name__ == "__main__":
     main()
