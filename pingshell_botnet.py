@@ -186,4 +186,4 @@ def main():
         print(f"Socket creation failed: {sock_err}. Ensure you are running the script with appropriate privileges.")
 
 if __name__ == "__main__":
-    main()
+    main()#remove this after testing to allow cron jobs to run
